@@ -1,0 +1,8 @@
+[package]
+name = "chome-mcp"
+version = "0.1.0"
+edition = "2024"
+description = "Cầu nối MCP (stdio) cho trình duyệt Chỏme"
+
+[dependencies]
+serde_json = "1"

@@ -1,0 +1,48 @@
+# Phát hành tự động: đẩy tag dạng v0.2.0 → build gói .deb trên Ubuntu 24.04
+# (chạy được trên Ubuntu 24.04+ / Debian 13) → tạo bản phát hành kèm file .deb.
+# Chỏme đã cài trên máy người dùng sẽ tự thấy bản mới này và đề nghị cập nhật.
+name: Phát hành
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cài thư viện phát triển
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config fakeroot python3-pil \
+            libwebkitgtk-6.0-dev libgtk-4-dev
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Kiểm tra phiên bản trong Cargo.toml khớp với tag
+        run: |
+          version="$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)"
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Cargo.toml ghi $version nhưng tag là $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
+      - name: Kiểm thử
+        run: cargo test --release --workspace
+
+      - name: Đóng gói .deb
+        run: packaging/build-deb.sh
+
+      - name: Tạo bản phát hành
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Chỏme ${{ github.ref_name }}
+          files: dist/*.deb
+          generate_release_notes: true

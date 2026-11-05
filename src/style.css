@@ -1,0 +1,147 @@
+/* Giao diện kiểu Chrome: tab trên cùng, thanh địa chỉ bo tròn. */
+
+.tabbar {
+  padding: 6px 6px 0 6px;
+  background: alpha(currentColor, 0.06);
+}
+
+.tab {
+  min-width: 0;
+  min-height: 32px;
+  padding: 0 4px 0 12px;
+  border-radius: 10px 10px 0 0;
+}
+.tab:hover {
+  background: alpha(currentColor, 0.07);
+}
+.tab.active {
+  background: @theme_base_color;
+}
+.tab.sleeping label {
+  opacity: 0.55;
+  font-style: italic;
+}
+.tab .tab-close {
+  min-width: 20px;
+  min-height: 20px;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.navbar {
+  padding: 5px 8px;
+  background: @theme_base_color;
+  border-bottom: 1px solid alpha(currentColor, 0.1);
+}
+
+.urlbar {
+  min-height: 34px;
+  border-radius: 999px;
+  padding: 0 14px;
+  background: alpha(currentColor, 0.06);
+  border: 1px solid transparent;
+  box-shadow: none;
+  outline: none;
+}
+.urlbar:focus-within {
+  background: @theme_base_color;
+  border-color: @theme_selected_bg_color;
+}
+
+.suggestions row {
+  padding: 6px 10px;
+}
+
+.loadbar trough,
+.loadbar progress {
+  min-height: 3px;
+  border-radius: 0;
+}
+.loadbar trough {
+  background: transparent;
+  border: none;
+}
+
+.statusbubble {
+  margin: 0 0 4px 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  background: @theme_base_color;
+  border: 1px solid alpha(currentColor, 0.15);
+}
+
+.findbar {
+  padding: 4px 8px;
+  border-top: 1px solid alpha(currentColor, 0.1);
+  background: @theme_base_color;
+}
+
+.tab .tab-audio {
+  min-width: 20px;
+  min-height: 20px;
+  padding: 0;
+}
+.tab:not(.active):not(:hover) .tab-close {
+  opacity: 0.0;
+}
+.urlbar image {
+  -gtk-icon-size: 16px;
+  opacity: 0.75;
+}
+.suggestions row {
+  padding: 8px 12px;
+}
+.suggestions row:selected {
+  background: alpha(currentColor, 0.1);
+  color: inherit;
+}
+
+/* Vạch ngăn mờ giữa các tab chưa chọn, như Chrome. */
+.tab:not(.active) {
+  box-shadow: inset -1px 0 0 -0px alpha(currentColor, 0.0);
+  background-image: linear-gradient(to bottom, transparent 25%, alpha(currentColor, 0.18) 25%, alpha(currentColor, 0.18) 75%, transparent 75%);
+  background-size: 1px 100%;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+.tab:not(.active):hover {
+  background-color: alpha(currentColor, 0.07);
+}
+
+/* Dấu báo khi công cụ AI (MCP) đang điều khiển trình duyệt. */
+.ai-badge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: alpha(#7c3aed, 0.15);
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+/* Thanh kéo giữa trang và DevTools (gắn bên phải như Chrome). */
+.devtools-split > separator {
+  min-width: 4px;
+  background: alpha(currentColor, 0.12);
+}
+
+/* Cửa sổ ẩn danh: thanh tab và thanh công cụ màu tối như Chrome. */
+window.incognito .tabbar { background: #202124; color: #e8eaed; }
+window.incognito .navbar, window.incognito .tab.active { background: #35363a; color: #e8eaed; }
+window.incognito .urlbar { background: #202124; color: #e8eaed; }
+.incognito-badge { padding: 2px 10px; border-radius: 999px; background: #5f6368; color: #fff; font-weight: 600; }
+
+/* Bong bóng tải xuống kiểu Chrome. */
+.dl-list { padding: 10px; min-width: 340px; }
+.dl-row { padding: 6px 2px; }
+.dl-percent { font-size: 0.85em; font-weight: 600; }
+.downloading { color: @theme_selected_bg_color; }
+
+/* Tab ghim: chỉ biểu tượng. */
+.tab.pinned { min-width: 0; padding: 0 12px; }
+
+/* Thanh bookmark. */
+.bookmarks-bar { background: @theme_base_color; padding: 0 8px 4px; border-bottom: 1px solid alpha(currentColor, 0.1); }
+.bookmark-item { padding: 2px 8px; min-height: 26px; border-radius: 999px; font-size: 0.92em; }
+
+/* Thanh báo cập nhật. */
+.update-bar { padding: 6px 12px; background: alpha(@theme_selected_bg_color, 0.12); border-bottom: 1px solid alpha(currentColor, 0.1); }

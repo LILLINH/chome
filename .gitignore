@@ -1,0 +1,9 @@
+# Kết quả build (đưa file .deb lên mục Releases của GitHub thay vì commit)
+/target/
+/dist/
+*.deb
+
+# File tạm
+*.log
+*.swp
+.DS_Store

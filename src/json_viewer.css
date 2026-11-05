@@ -1,0 +1,46 @@
+/**
+ * @file json_viewer.css
+ * @description Giao diện trình xem JSON của Chỏme. Trình duyệt chèn file này (không bị CSP
+ * của trang chặn); mọi selector nằm dưới html.chome-json nên không ảnh hưởng trang khác.
+ */
+html.chome-json { color-scheme: light dark; --bg:#fff; --fg:#1f2328; --muted:#6b7280; --line:#e5e7eb; --bar:#f6f7f9;
+          --key:#8250df; --str:#0a7a3e; --num:#0b5cad; --bool:#b45309; --null:#9a3412; --hl:#fde68a; --sel:#eef2ff; }
+@media (prefers-color-scheme: dark) {
+  html.chome-json { --bg:#1b1c1f; --fg:#e6e6e6; --muted:#9aa0a6; --line:#33353a; --bar:#232428;
+            --key:#c4a7ff; --str:#7ee2a8; --num:#8ab4f8; --bool:#fbbf72; --null:#f28b82; --hl:#5c4a00; --sel:#2a2f45; }
+}
+html.chome-json, html.chome-json body { margin:0; background:var(--bg); color:var(--fg); }
+html.chome-json body { font: 13px/1.6 ui-monospace, "JetBrains Mono", "DejaVu Sans Mono", monospace; }
+html.chome-json .bar { position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+         padding:8px 14px; background:var(--bar); border-bottom:1px solid var(--line); font-family:system-ui, sans-serif; }
+html.chome-json .bar button { font:inherit; font-size:13px; padding:4px 10px; border-radius:6px; border:1px solid var(--line);
+                background:var(--bg); color:var(--fg); cursor:pointer; }
+html.chome-json .bar button.on { border-color: var(--num); color: var(--num); }
+html.chome-json .bar input { font:inherit; font-size:13px; padding:4px 10px; border-radius:6px; border:1px solid var(--line);
+               background:var(--bg); color:var(--fg); min-width:200px; }
+html.chome-json .bar .info { color:var(--muted); font-size:12px; margin-left:auto; }
+html.chome-json .path { padding:4px 14px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--line); min-height:18px; }
+html.chome-json .path b { color: var(--fg); font-weight: 500; cursor: copy; }
+html.chome-json #tree { padding:10px 14px 40px; }
+html.chome-json .n { padding-left: 18px; position: relative; white-space: pre-wrap; word-break: break-word; }
+html.chome-json .n.root { padding-left: 0; }
+html.chome-json .t { position:absolute; left:2px; width:14px; cursor:pointer; color:var(--muted); user-select:none; }
+html.chome-json .t::before { content:"▾"; }
+html.chome-json .closed > .t::before { content:"▸"; }
+html.chome-json .closed > .kids { display:none; }
+html.chome-json .closed > .end { display:none; }
+html.chome-json .sum { display:none; color:var(--muted); cursor:pointer; }
+html.chome-json .closed > .sum { display:inline; }
+html.chome-json .k { color:var(--key); cursor:pointer; }
+html.chome-json .k:hover { text-decoration: underline; }
+html.chome-json .s { color:var(--str); }
+html.chome-json .num { color:var(--num); }
+html.chome-json .b { color:var(--bool); }
+html.chome-json .nl { color:var(--null); }
+html.chome-json .p { color:var(--muted); }
+html.chome-json .more { color:var(--num); cursor:pointer; padding-left:18px; }
+html.chome-json a.s { text-decoration: underline; }
+html.chome-json mark { background:var(--hl); color:inherit; border-radius:2px; }
+html.chome-json .selected { background: var(--sel); border-radius: 4px; }
+html.chome-json #raw { display:none; margin:0; padding:10px 14px; white-space:pre-wrap; word-break:break-word; }
+html.chome-json .bar .path { flex-basis: 100%; padding: 0; border: 0; min-height: 0; }
