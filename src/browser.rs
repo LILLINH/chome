@@ -585,10 +585,10 @@ impl Browser {
         b
     }
 
-    /// Chỉ dùng khi đo đạc: `LITE_DEBUG_JS=file` — mỗi dòng "giây<TAB>script"; script chạy
+    /// Chỉ dùng khi đo đạc: `CHOME_DEBUG_JS=file` — mỗi dòng "giây<TAB>script"; script chạy
     /// trên tab hiện tại sau số giây đó, kết quả in ra stderr dạng "[js] <kết quả>".
     fn debug_js(self: &Rc<Self>) {
-        let Some(text) = std::env::var("LITE_DEBUG_JS").ok().and_then(|f| std::fs::read_to_string(f).ok()) else {
+        let Some(text) = std::env::var("CHOME_DEBUG_JS").ok().and_then(|f| std::fs::read_to_string(f).ok()) else {
             return;
         };
         for line in text.lines() {
@@ -651,13 +651,13 @@ impl Browser {
         }
     }
 
-    /// Chỉ dùng khi kiểm tra giao diện: `LITE_SCREENSHOT=out.png [LITE_SCREENSHOT_DELAY=giây]
-    /// [LITE_SCREENSHOT_TYPE=chữ]` → app tự vẽ cửa sổ ra PNG rồi thoát.
+    /// Chỉ dùng khi kiểm tra giao diện: `CHOME_SCREENSHOT=out.png [CHOME_SCREENSHOT_DELAY=giây]
+    /// [CHOME_SCREENSHOT_TYPE=chữ]` → app tự vẽ cửa sổ ra PNG rồi thoát.
     fn debug_screenshot(self: &Rc<Self>) {
-        let Ok(path) = std::env::var("LITE_SCREENSHOT") else { return };
-        let delay: u32 = std::env::var("LITE_SCREENSHOT_DELAY").ok().and_then(|v| v.parse().ok()).unwrap_or(8);
+        let Ok(path) = std::env::var("CHOME_SCREENSHOT") else { return };
+        let delay: u32 = std::env::var("CHOME_SCREENSHOT_DELAY").ok().and_then(|v| v.parse().ok()).unwrap_or(8);
         let weak = Rc::downgrade(self);
-        if let Ok(text) = std::env::var("LITE_SCREENSHOT_TYPE") {
+        if let Ok(text) = std::env::var("CHOME_SCREENSHOT_TYPE") {
             let weak = weak.clone();
             glib::timeout_add_seconds_local_once(delay.saturating_sub(2).max(1), move || {
                 if let Some(b) = weak.upgrade() {
@@ -1045,7 +1045,7 @@ impl Browser {
         if !inspector.is_attached() && inspector.can_attach() {
             inspector.attach();
         }
-        if std::env::var_os("LITE_DEBUG_JS").is_some() {
+        if std::env::var_os("CHOME_DEBUG_JS").is_some() {
             eprintln!("[js] F12: attached={} can_attach={}", inspector.is_attached(), inspector.can_attach());
         }
     }
@@ -1609,7 +1609,7 @@ impl Browser {
             });
             let f = both.clone();
             inspector.connect_open_window(move |_| {
-                if std::env::var_os("LITE_DEBUG_JS").is_some() {
+                if std::env::var_os("CHOME_DEBUG_JS").is_some() {
                     eprintln!("[js] tín hiệu: open-window");
                 }
                 if let Some((_, t)) = f() {
@@ -1867,7 +1867,7 @@ impl Browser {
             let Some(b) = weak.upgrade() else { return };
             let Some(json) = passwords::message_json(value) else { return };
             let Some(Message::Credentials(credential)) = passwords::parse_message(&json) else { return };
-            if std::env::var_os("LITE_DEBUG_JS").is_some() {
+            if std::env::var_os("CHOME_DEBUG_JS").is_some() {
                 eprintln!(
                     "[js] nhận thông tin đăng nhập từ {} | cửa sổ đang dùng: {} | ẩn danh: {} | kho khóa: {}",
                     credential.origin,
@@ -2594,7 +2594,7 @@ async fn install_update(release: crate::updater::Release) {
 /// Tự kiểm tra cập nhật 15 giây sau khi mở, tối đa mỗi ngày một lần.
 pub fn schedule_update_check(engine: Rc<Engine>) {
     glib::timeout_add_seconds_local_once(15, move || {
-        if !engine.prefs.borrow().update_check || std::env::var_os("LITE_NON_UNIQUE").is_some() {
+        if !engine.prefs.borrow().update_check || std::env::var_os("CHOME_NON_UNIQUE").is_some() {
             return; // tắt trong cài đặt, hoặc bản chạy thử
         }
         let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);

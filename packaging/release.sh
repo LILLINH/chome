@@ -29,10 +29,11 @@ echo "Phiên bản: $CURRENT → $VERSION"
 
 # Chỉ đổi dòng version đầu tiên (của gói chome), không đụng phiên bản thư viện.
 sed -i "0,/^version = \".*\"/s//version = \"$VERSION\"/" Cargo.toml
+sed -i "0,/^version = \".*\"/s//version = \"$VERSION\"/" chome-mcp/Cargo.toml
 # Cập nhật Cargo.lock cho khớp (không cần mạng).
 cargo metadata --format-version 1 --offline >/dev/null 2>&1 || cargo metadata --format-version 1 >/dev/null
 
-git add Cargo.toml Cargo.lock
+git add Cargo.toml chome-mcp/Cargo.toml Cargo.lock
 git commit -m "Phát hành $VERSION"
 git tag -a "v$VERSION" -m "Chỏme $VERSION"
 git push origin HEAD "v$VERSION"

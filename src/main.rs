@@ -52,12 +52,12 @@ const ACCELS: &[(&str, &[&str])] = &[
 fn main() -> glib::ExitCode {
     // Phải chạy trước mọi thứ khác: GLib chỉ đọc G_RESOURCE_OVERLAYS một lần.
     devtools::setup();
-    if std::env::var_os("LITE_DEBUG_DEVTOOLS").is_some() {
+    if std::env::var_os("CHOME_DEBUG_DEVTOOLS").is_some() {
         eprintln!("[devtools] bản chỉnh sửa đang dùng: {}", devtools::is_active());
     }
     let app = gtk::Application::builder()
         .application_id(APP_ID)
-        .flags(if std::env::var_os("LITE_NON_UNIQUE").is_some() {
+        .flags(if std::env::var_os("CHOME_NON_UNIQUE").is_some() {
             // Chạy thử độc lập, không chuyển yêu cầu sang cửa sổ đang mở của người dùng.
             gio::ApplicationFlags::HANDLES_OPEN | gio::ApplicationFlags::NON_UNIQUE
         } else {

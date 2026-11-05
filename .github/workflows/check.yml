@@ -1,0 +1,29 @@
+# Kiểm tra mỗi lần đẩy code lên main / mở pull request: build + kiểm thử trên Ubuntu 24.04,
+# để phát hiện lỗi sớm thay vì đợi tới lúc phát hành.
+name: Kiểm tra
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cài thư viện phát triển
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libwebkitgtk-6.0-dev libgtk-4-dev
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --release --workspace
+
+      - name: Kiểm thử
+        run: cargo test --release --workspace

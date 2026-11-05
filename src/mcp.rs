@@ -47,7 +47,7 @@ pub fn bridge_command() -> String {
 
 pub fn init(engine: &Rc<Engine>) {
     ENGINE.with(|e| *e.borrow_mut() = Rc::downgrade(engine));
-    let on = std::env::var("LITE_MCP").map(|v| v == "1").unwrap_or(engine.prefs.borrow().mcp);
+    let on = std::env::var("CHOME_MCP").map(|v| v == "1").unwrap_or(engine.prefs.borrow().mcp);
     set_enabled(on);
 }
 

@@ -50,18 +50,18 @@ impl Config {
         let var = |k: &str| std::env::var(k).ok();
         let env_u64 = |k: &str, d: u64| var(k).and_then(|v| v.parse().ok()).unwrap_or(d);
         Self {
-            search_url: var("LITE_SEARCH_URL"),
-            sleep_after: var("LITE_SLEEP_SECONDS")
+            search_url: var("CHOME_SEARCH_URL"),
+            sleep_after: var("CHOME_SLEEP_SECONDS")
                 .and_then(|v| v.parse().ok())
                 .map(Duration::from_secs)
-                .or_else(|| var("LITE_SLEEP_MINUTES").and_then(|v| v.parse::<u64>().ok()).map(|m| Duration::from_secs(m * 60))),
-            gpu: var("LITE_GPU").map(|v| v == "1"),
-            adblock: var("LITE_ADBLOCK").map(|v| v != "0"),
-            memory_limit_mb: env_u64("LITE_MEMORY_LIMIT_MB", 4096) as u32,
-            low_memory_mb: env_u64("LITE_LOW_MEMORY_MB", 1500),
+                .or_else(|| var("CHOME_SLEEP_MINUTES").and_then(|v| v.parse::<u64>().ok()).map(|m| Duration::from_secs(m * 60))),
+            gpu: var("CHOME_GPU").map(|v| v == "1"),
+            adblock: var("CHOME_ADBLOCK").map(|v| v != "0"),
+            memory_limit_mb: env_u64("CHOME_MEMORY_LIMIT_MB", 4096) as u32,
+            low_memory_mb: env_u64("CHOME_LOW_MEMORY_MB", 1500),
             // Cache đầy đủ như Chrome. DocumentViewer (tối thiểu) tắt cả cache trên đĩa,
             // làm YouTube tải lại ~40MB JS mỗi lần và kẹt ở khung xương — chỉ tiết kiệm ~5MB RAM.
-            cache_model: match var("LITE_CACHE").as_deref() {
+            cache_model: match var("CHOME_CACHE").as_deref() {
                 Some("viewer") => CacheModel::DocumentViewer,
                 Some("document") => CacheModel::DocumentBrowser,
                 _ => CacheModel::WebBrowser,
@@ -156,18 +156,6 @@ impl Engine {
         let config = Config::from_env();
         let data_dir = glib::user_data_dir().join("chome");
         let cache_dir = glib::user_cache_dir().join("chome");
-        // Đã đổi tên (Lite Browser → Lá → Chỏme): chuyển dữ liệu cũ (lịch sử, bookmark,
-        // đăng nhập, cài đặt…) sang thư mục mới, ưu tiên bản mới nhất.
-        for old_name in ["la-browser", "lite-browser"] {
-            for (old, new) in [
-                (glib::user_data_dir().join(old_name), &data_dir),
-                (glib::user_cache_dir().join(old_name), &cache_dir),
-            ] {
-                if old.is_dir() && !new.exists() {
-                    let _ = std::fs::rename(&old, new);
-                }
-            }
-        }
         let _ = std::fs::create_dir_all(&data_dir);
         let _ = std::fs::create_dir_all(&cache_dir);
 
@@ -177,8 +165,8 @@ impl Engine {
         // Dọn nhẹ (bất đồng bộ) từ ~600MB; dọn mạnh (đồng bộ — trang phải dừng chờ) chỉ từ
         // ~1.4GB: ngưỡng cũ ~820MB làm YouTube nghe lâu bị đứng từng lúc vì bị dọn mạnh liên tục.
         // Thứ tự quan trọng: WebKit yêu cầu conservative < strict ngay lúc đặt.
-        mem.set_strict_threshold(env_f64("LITE_MEM_STRICT", 0.35));
-        mem.set_conservative_threshold(env_f64("LITE_MEM_CONSERVATIVE", 0.15));
+        mem.set_strict_threshold(env_f64("CHOME_MEM_STRICT", 0.35));
+        mem.set_conservative_threshold(env_f64("CHOME_MEM_CONSERVATIVE", 0.15));
         let context = WebContext::builder().memory_pressure_settings(&mem).build();
         context.set_cache_model(config.cache_model);
 
@@ -204,8 +192,8 @@ impl Engine {
         settings.set_enable_smooth_scrolling(true);
         settings.set_enable_developer_extras(true);
         settings.set_javascript_can_open_windows_automatically(false); // chặn popup tự bật
-        // Không tự phát video khi chưa bấm (LITE_AUTOPLAY=1 chỉ dùng khi đo đạc).
-        settings.set_media_playback_requires_user_gesture(std::env::var_os("LITE_AUTOPLAY").is_none());
+        // Không tự phát video khi chưa bấm (CHOME_AUTOPLAY=1 chỉ dùng khi đo đạc).
+        settings.set_media_playback_requires_user_gesture(std::env::var_os("CHOME_AUTOPLAY").is_none());
         settings.set_user_agent_with_application_details(Some("Chrome"), Some("130.0.0.0"));
 
         let db = Rc::new(Storage::open(&data_dir.join("browser.sqlite")).unwrap_or_else(|e| {
