@@ -50,5 +50,3 @@ cargo build --release --workspace
 ```
 
 Đóng gói `.deb`: `packaging/build-deb.sh` (kết quả nằm trong thư mục `dist/`).
-
-Phát hành bản mới: `packaging/release.sh 0.2.0` — GitHub Actions sẽ tự build `.deb` và tạo bản phát hành.
