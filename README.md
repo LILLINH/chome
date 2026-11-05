@@ -25,13 +25,13 @@ khi mở nhiều tab: tab không dùng một lúc sẽ tự "ngủ" để giải
 
 ## Cài đặt
 
-Yêu cầu: **Ubuntu 24.04 trở lên** hoặc **Debian 13**, máy 64-bit.
+Yêu cầu: **Ubuntu 24.04 trở lên** hoặc **Debian 13**, máy tính chip Intel/AMD 64-bit.
 
-1. Tải file `chome_<phiên bản>_amd64.deb` ở mục [**Releases**](../../releases).
+1. Tải file `chome_<phiên bản>_amd64.deb` ở [**bản phát hành mới nhất**](https://github.com/LILLINH/chome/releases/latest).
 2. Nhấp đúp vào file để cài bằng App Center, hoặc chạy:
 
    ```bash
-   sudo apt install ./chome_0.1.0_amd64.deb
+   sudo apt install ./chome_*_amd64.deb
    ```
 
 3. Mở **Chỏme** từ menu ứng dụng.
@@ -42,6 +42,8 @@ Gỡ cài đặt: `sudo apt remove chome`
 (hoặc menu ⋮ → Kiểm tra cập nhật).
 
 ## Build từ mã nguồn
+
+Cần [Rust](https://rustup.rs) bản mới.
 
 ```bash
 sudo apt install -y build-essential pkg-config libwebkitgtk-6.0-dev libgtk-4-dev
