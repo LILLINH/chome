@@ -1,6 +1,6 @@
 [package]
 name = "chome"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Trình duyệt web nhẹ cho Linux, giao diện như Chrome (Rust + GTK4 + WebKitGTK)"
 license = "Unlicense"
