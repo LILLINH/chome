@@ -71,6 +71,17 @@
   border: 1px solid alpha(currentColor, 0.15);
 }
 
+/* Bong bóng báo mức thu phóng trang, nổi trên góc nội dung. */
+.zoom-bubble {
+  margin: 0;
+  padding: 6px 11px;
+  border-radius: 8px;
+  background: alpha(@theme_base_color, 0.94);
+  border: 1px solid alpha(currentColor, 0.18);
+  box-shadow: 0 2px 8px alpha(#000, 0.22);
+  font-weight: 600;
+}
+
 .findbar {
   padding: 4px 8px;
   border-top: 1px solid alpha(currentColor, 0.1);

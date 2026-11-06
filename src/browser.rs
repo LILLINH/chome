@@ -9,7 +9,7 @@ use crate::pages::{self, NEWTAB};
 use crate::passwords::{self, Credential, Message};
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 use webkit6::{gdk, gio, glib, gtk, prelude::*};
 use webkit6::{
     LoadEvent, NavigationPolicyDecision, NavigationType, PolicyDecisionType, ResponsePolicyDecision,
@@ -128,6 +128,9 @@ pub struct Browser {
     reload_btn: gtk::Button,
     progress: gtk::ProgressBar,
     status: gtk::Label,
+    zoom_notice: gtk::Label,
+    zoom_notice_seq: Rc<Cell<u64>>,
+    scroll_zoom_delta: Cell<f64>,
     find_bar: gtk::Revealer,
     find_entry: gtk::SearchEntry,
     find_label: gtk::Label,
@@ -410,10 +413,19 @@ impl Browser {
         status.set_max_width_chars(80);
         status.set_visible(false);
         status.set_can_target(false);
+        let zoom_notice = gtk::Label::new(None);
+        zoom_notice.add_css_class("zoom-bubble");
+        zoom_notice.set_halign(gtk::Align::End);
+        zoom_notice.set_valign(gtk::Align::Start);
+        zoom_notice.set_margin_top(12);
+        zoom_notice.set_margin_end(16);
+        zoom_notice.set_visible(false);
+        zoom_notice.set_can_target(false);
         let overlay = gtk::Overlay::new();
         overlay.set_child(Some(&stack));
         overlay.add_overlay(&progress);
         overlay.add_overlay(&status);
+        overlay.add_overlay(&zoom_notice);
 
         // ---- Thanh tìm trong trang ----
         let find_entry = gtk::SearchEntry::new();
@@ -503,6 +515,9 @@ impl Browser {
             reload_btn,
             progress,
             status,
+            zoom_notice,
+            zoom_notice_seq: Rc::new(Cell::new(0)),
+            scroll_zoom_delta: Cell::new(0.0),
             find_bar,
             find_entry,
             find_label,
@@ -1460,6 +1475,48 @@ impl Browser {
         let wt = Rc::downgrade(tab);
         let both = move || -> Option<(Rc<Browser>, Rc<Tab>)> { Some((wb.upgrade()?, wt.upgrade()?)) };
 
+        // Bất kỳ thay đổi mức thu phóng nào (phím tắt, menu, cuộn hoặc API) đều
+        // hiện cùng một bong bóng % ở góc nội dung.
+        let f = both.clone();
+        view.connect_zoom_level_notify(move |v| {
+            let Some((b, t)) = f() else { return };
+            if b.is_current(&t) {
+                b.show_zoom_notice(v.zoom_level());
+            }
+        });
+
+        // Ctrl + cuộn trên trang: tích lũy delta của touchpad thành từng bước
+        // zoom 1.1, đồng thời chặn cuộn trang khi Ctrl đang được giữ.
+        let scroll = gtk::EventControllerScroll::new(gtk::EventControllerScrollFlags::VERTICAL);
+        // Bắt sự kiện trước bộ xử lý cuộn có sẵn của WebView, nếu không trang sẽ cuộn mất.
+        scroll.set_propagation_phase(gtk::PropagationPhase::Capture);
+        let f = both.clone();
+        scroll.connect_scroll(move |controller, _dx, dy| {
+            let Some((b, t)) = f() else { return glib::Propagation::Proceed };
+            if !b.is_current(&t)
+                || !controller
+                    .current_event_state()
+                    .contains(gdk::ModifierType::CONTROL_MASK)
+            {
+                return glib::Propagation::Proceed;
+            }
+            let accumulated = b.scroll_zoom_delta.get() + dy;
+            let step = if accumulated.abs() >= 1.0 {
+                accumulated.signum()
+            } else {
+                b.scroll_zoom_delta.set(accumulated);
+                return glib::Propagation::Stop;
+            };
+            b.scroll_zoom_delta.set(accumulated - step);
+            if step < 0.0 {
+                b.change_zoom(Some(1.1));
+            } else {
+                b.change_zoom(Some(1.0 / 1.1));
+            }
+            glib::Propagation::Stop
+        });
+        view.add_controller(scroll);
+
         let f = both.clone();
         view.connect_title_notify(move |v| {
             let Some((b, t)) = f() else { return };
@@ -2184,6 +2241,27 @@ impl Browser {
         self.window.add_action(&action);
     }
 
+    fn change_zoom(&self, factor: Option<f64>) {
+        if let Some(v) = self.current_view() {
+            let z = factor.map(|f| (v.zoom_level() * f).clamp(0.3, 5.0)).unwrap_or(1.0);
+            v.set_zoom_level(z);
+        }
+    }
+
+    fn show_zoom_notice(&self, zoom: f64) {
+        self.zoom_notice.set_text(&format!("{}%", (zoom * 100.0).round() as i32));
+        self.zoom_notice.set_visible(true);
+        let seq = self.zoom_notice_seq.get().wrapping_add(1);
+        self.zoom_notice_seq.set(seq);
+        let label = self.zoom_notice.clone();
+        let weak = self.zoom_notice_seq.clone();
+        glib::timeout_add_local_once(Duration::from_millis(1800), move || {
+            if weak.get() == seq {
+                label.set_visible(false);
+            }
+        });
+    }
+
     fn setup_actions(self: &Rc<Self>) {
         self.add_action("new-tab", |b| {
             b.add_tab(NEWTAB, "Tab mới", Open::Foreground);
@@ -2260,17 +2338,9 @@ impl Browser {
                 None => { b.add_tab("chome://passwords", "Mật khẩu", Open::Foreground); }
             }
         });
-        let zoom = |factor: Option<f64>| {
-            move |b: &Rc<Browser>| {
-                if let Some(v) = b.current_view() {
-                    let z = factor.map(|f| (v.zoom_level() * f).clamp(0.3, 5.0)).unwrap_or(1.0);
-                    v.set_zoom_level(z);
-                }
-            }
-        };
-        self.add_action("zoom-in", zoom(Some(1.1)));
-        self.add_action("zoom-out", zoom(Some(1.0 / 1.1)));
-        self.add_action("zoom-reset", zoom(None));
+        self.add_action("zoom-in", |b| b.change_zoom(Some(1.1)));
+        self.add_action("zoom-out", |b| b.change_zoom(Some(1.0 / 1.1)));
+        self.add_action("zoom-reset", |b| b.change_zoom(None));
         self.add_action("devtools", |b| b.toggle_devtools(true));
         self.add_action("devtools-open", |b| b.toggle_devtools(false));
         self.add_action("settings", |b| {
