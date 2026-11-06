@@ -4,36 +4,40 @@ Hash: SHA512
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Fri, 06 Nov 2026 01:55:42 +0000
+Date: Fri, 06 Nov 2026 04:34:08 +0000
 Description: Kho cập nhật của trình duyệt Chỏme
 Label: Chome
 Origin: Chome
 Suite: stable
 MD5Sum:
- cfb38ef4650236ba8c746d2eb66c1401             1100 main/binary-amd64/Packages
- 08127982d84eff88ae357c7df37db015              761 main/binary-amd64/Packages.gz
+ cfcf35faca707fdbcceaddef411fcd1d             1131 Release
+ 1d5bd861bb7d5d81a2f2209f42177721             2200 main/binary-amd64/Packages
+ 008f932c28a77fca1812e893de5f79d0              965 main/binary-amd64/Packages.gz
 SHA1:
- 1fa5e3d5942b8c819340ec02423bf57f56e4ab3d             1100 main/binary-amd64/Packages
- 0677c3bccbbf23df782bb712aa16df75b025078f              761 main/binary-amd64/Packages.gz
+ b968b57fef005563cef358537ce134025bb03398             1131 Release
+ 567ef9027833ee35f8ce353e8a1f181f3cfad669             2200 main/binary-amd64/Packages
+ 6af515779095b5be0ebcf38ba305093f341e36a0              965 main/binary-amd64/Packages.gz
 SHA256:
- a4e0c70054f3340dbf472f0f869fed9eafdc964ddabfb128b57b995383f69ce7             1100 main/binary-amd64/Packages
- 870cd0285edb2b7f5827f07d8b874f97c9ae8a603a7d74ecb3dc807d34617ab7              761 main/binary-amd64/Packages.gz
+ febdeda4e6b4bc560e13062984596a45b7f7197cfbedb5eb1da237d9150f1729             1131 Release
+ 21282f92c8edf9512e662cf1cfbe5d3d84e16335bca484a7ba587eadb5272b4d             2200 main/binary-amd64/Packages
+ a69ecb6bf05a10691df218eee9174e1cba0172b93247db26c9bff834c620d1ce              965 main/binary-amd64/Packages.gz
 SHA512:
- 013d8576696be259820a3dc0b89ebbd725620328fb1acd74da7f1e607035661ff046e29e2de2a28fdbcf7e99466ab9a6b7327c2b7b0434f636edc25b122e1c69             1100 main/binary-amd64/Packages
- 65516f7f7e6df695de04a3033f7d82a6b327960745e22a25ba86ce1e3fd80344a9a54a993cab2944e1b5ac37e720388027b8916a50cd94b81ced81784a2351a7              761 main/binary-amd64/Packages.gz
+ eda261edb4714b281777872e0da47fbc2bd0df358857ba9003238cde6d919b3c24fbaced2d05dda0b0ba375684ad7ca344d475a69eda23cc3a7880a6538d6521             1131 Release
+ e2a53ea1009c6042137969641c5fa358c884cf1cb161d46b470de36b70a4cad6adecc3bfcc204b529e328f8f4e21a44d687a457baea180b7571f6d5cb349dcbf             2200 main/binary-amd64/Packages
+ 0d2c496671fc0256136a40e7d6f443f30033de14d89ce52c137e1de1af2994e26ab149bcc783c856c203e3149a0d35b74ef13d91442c4f1a2d42e95dfc185303              965 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEcr1/Lu38PFbbEX3tXE0r99UXBfMFAmrtM54ACgkQXE0r99UX
-BfMNSA//aXUfBn1nYM19D9Fq0k24O1n0zBpECqVi8WvLzisLnjJxovGbBmo2rG2W
-GTtDucNVWkqRIDE2wlWnh5lS3CUO4W5Dp0m7QOn/Qb2BIBqsWqNaL3H8I7Sgis6K
-zbtvR2n4BVB6FGo3hVJ6LLWqFVC/au2AHf/3xuvgF4feRcIFtQ/E7MyL54hn+uAU
-uo9dwpj0TnKjNUk7FqMB7YH3poWakgw1ov9dXexAzip9ySLNuY68BI3PnCC0hJln
-d8JpDOCc/wdWVIqIUyZk/Yuw5ebPkjKe5UNLe2r8OTCqfuL034XiquW+bEUiSag5
-pawjFb3I7pspNl0uTZuwZc3lZcjob9IrC1kNhQh8bgfLe0iO7q0Du9fh9iQlBDeY
-8EqM5r61nt4Df6FzwNtelmqXyC4GQ4PT/XHBBI+OP7CrTGUtLKI6NiJBqRAYYgLg
-Or2bDfGnZRiHWXv0SVkkcaWkMXGCDwehWRtkArcWTa9Q2TV4FhHBj7bnNw9i9Tle
-18SxBGwBpC91YTEc8XsRhdoE/kv7T0DaWUArGs1lXIDpf8fvk12RycX1vaj9Tike
-h3/VCifwcvyrKhVP3WyOTYB9NkzFr8d0BvmebSe8zQ51HYDdycxI4KiJ1r1ws9qy
-RNmDMnbQsqNz/ZlzPpkBZ3RUH/hJSlYbz+g+BFZ6/fyJoZc6iC0=
-=FsnX
+iQIzBAEBCgAdFiEEcr1/Lu38PFbbEX3tXE0r99UXBfMFAmrtWMAACgkQXE0r99UX
+BfP6Gw//QrZt1gDEDXEs+zRDMZDgQV/D7mQ4ODrS3xhXHtqVLycsp22Dfj93HDuY
+lTNs0bum0P91BN3K5Fz07wBGCVP5KwLUKYL3aZEc6WMDDi71D2tiusDeGO4GLsvG
+TxrdWrkyT4lclsf3YmOkAfFb1LPNUJEqyLCIhPVUGPl+jWHcs2CVzAQLu6H4OiUu
+YgH1kcG0qLY/wW1HQ2pz0ZciLQ4NQ7rXj0i/fyHRNONNFNiJ0jXsyTh/LrmD2h/V
+DFc3g12zDBM1D5CXSaDT0w8zAXLNk8+J10Dtn+xDLasqQ42QXohOo+T5VcW3z0/B
+EOuZfA21Rfe6QDQwgnUIZUWXKQQOjnRzkziSxx52EUgDYHesD5lDSqi9aelBTAjC
+9wjr1RINFJnnXuEIzh9qHda+STQHHlNh5weGgPspdvwhUA91PLq5jdcrVxceUvcG
+oCaHAwoIiWQQcgdUieU+XFqK0nV61hlO3l/x6XJNg47A6OqLsF5wpNhoyN0OU5kO
+Tq7sDbv/NeULetEGVJi9ZBBuhHawB+rU3pbw2yi/QLBtPKc3kgDJp36IfpTtxCaU
+3smMHeBgWv4pYgCfn5FU1PuXTVCclOgOKHdVXHmcztt+UoDZ3nr0TGwAQ2bAmqml
+seURNjZ4WQ+Kl8ihL4j+fUtrNAfsJbKIW/UxDnsc5lIL3oEJeq8=
+=+buG
 -----END PGP SIGNATURE-----
