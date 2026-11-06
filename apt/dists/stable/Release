@@ -1,0 +1,20 @@
+Architectures: amd64
+Codename: stable
+Components: main
+Date: Fri, 06 Nov 2026 01:55:42 +0000
+Description: Kho cập nhật của trình duyệt Chỏme
+Label: Chome
+Origin: Chome
+Suite: stable
+MD5Sum:
+ cfb38ef4650236ba8c746d2eb66c1401             1100 main/binary-amd64/Packages
+ 08127982d84eff88ae357c7df37db015              761 main/binary-amd64/Packages.gz
+SHA1:
+ 1fa5e3d5942b8c819340ec02423bf57f56e4ab3d             1100 main/binary-amd64/Packages
+ 0677c3bccbbf23df782bb712aa16df75b025078f              761 main/binary-amd64/Packages.gz
+SHA256:
+ a4e0c70054f3340dbf472f0f869fed9eafdc964ddabfb128b57b995383f69ce7             1100 main/binary-amd64/Packages
+ 870cd0285edb2b7f5827f07d8b874f97c9ae8a603a7d74ecb3dc807d34617ab7              761 main/binary-amd64/Packages.gz
+SHA512:
+ 013d8576696be259820a3dc0b89ebbd725620328fb1acd74da7f1e607035661ff046e29e2de2a28fdbcf7e99466ab9a6b7327c2b7b0434f636edc25b122e1c69             1100 main/binary-amd64/Packages
+ 65516f7f7e6df695de04a3033f7d82a6b327960745e22a25ba86ce1e3fd80344a9a54a993cab2944e1b5ac37e720388027b8916a50cd94b81ced81784a2351a7              761 main/binary-amd64/Packages.gz

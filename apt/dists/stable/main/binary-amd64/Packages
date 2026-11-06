@@ -1,0 +1,20 @@
+Package: chome
+Architecture: amd64
+Version: 0.1.1
+Priority: optional
+Section: web
+Maintainer: Chỏme Maintainers <maintainers@chome.invalid>
+Installed-Size: 3908
+Depends: libc6 (>= 2.34), libwebkitgtk-6.0-4 (>= 2.42), libjavascriptcoregtk-6.0-1 (>= 2.42), libgtk-4-1 (>= 4.12), libsoup-3.0-0, libglib2.0-0t64 | libglib2.0-0, libcairo2, libpango-1.0-0
+Recommends: gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad, gstreamer1.0-libav, va-driver-all, hunspell-vi, hunspell-en-us
+Filename: pool/main/c/chome/chome_0.1.1_amd64.deb
+Size: 1612484
+MD5sum: e7ba9d9bd2093c99926a4de447659a3b
+SHA1: 766f876580e5e14928edcfd473ab877e527cd7a9
+SHA256: 35d33caa8174bd5a2c9dd013e01547f4b158863002e7b196a0b6d0bcffd666bc
+SHA512: d57b29e7d2c922a4f59c67161b12c04880602844db78a2d255d914f3bbc97a003513a9303ded0a11628fb17e06c06e38b20d8aacf916dc582ef7a8ad44e56a91
+Description: Chỏme — trình duyệt nhẹ, tiết kiệm RAM
+ Chỏme là trình duyệt giao diện kiểu Chrome dùng engine WebKit.
+ Tab nền tự ngủ để giải phóng RAM, chặn quảng cáo sẵn, lưu lịch sử
+ và bookmark cục bộ.
+
