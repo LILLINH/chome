@@ -31,6 +31,8 @@ MCP_BIN="${MCP_BIN:-$(dirname "$BIN")/chome-mcp}"
 [ -x "$MCP_BIN" ] || { echo "Không tìm thấy chome-mcp (cargo build --release --workspace)" >&2; exit 1; }
 install -Dm755 "$MCP_BIN" "$STAGE/usr/bin/chome-mcp"
 strip --strip-unneeded "$STAGE/usr/bin/chome" 2>/dev/null || true
+# Khóa công khai của kho APT (để apt kiểm tra chữ ký kho cập nhật).
+install -Dm644 packaging/chome-archive-keyring.gpg "$STAGE/usr/share/keyrings/chome-archive-keyring.gpg"
 
 # Icon nhiều kích cỡ (tạo từ assets/icon.png).
 for size in 16 24 32 48 64 128 256 512; do
@@ -87,6 +89,41 @@ Description: Chỏme — trình duyệt nhẹ, tiết kiệm RAM
  Tab nền tự ngủ để giải phóng RAM, chặn quảng cáo sẵn, lưu lịch sử
  và bookmark cục bộ.
 EOF
+
+# Khi cài: thêm kho cập nhật của Chỏme (giống Google Chrome) — chỉ một lần; nếu người dùng
+# tự xóa nguồn này thì các lần nâng cấp sau không thêm lại.
+cat > "$STAGE/DEBIAN/postinst" <<'POSTINST'
+#!/bin/sh
+set -e
+SRC=/etc/apt/sources.list.d/chome.sources
+MARK=/var/lib/chome/apt-source-added
+if [ "$1" = "configure" ] && [ ! -e "$MARK" ]; then
+  if [ ! -e "$SRC" ]; then
+    cat > "$SRC" <<'SOURCES'
+Types: deb
+URIs: https://lillinh.github.io/chome/apt
+Suites: stable
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/chome-archive-keyring.gpg
+SOURCES
+  fi
+  mkdir -p /var/lib/chome
+  touch "$MARK"
+fi
+exit 0
+POSTINST
+# Khi gỡ hẳn (apt purge): bỏ nguồn kho và dấu đánh dấu.
+cat > "$STAGE/DEBIAN/postrm" <<'POSTRM'
+#!/bin/sh
+set -e
+if [ "$1" = "purge" ]; then
+  rm -f /etc/apt/sources.list.d/chome.sources
+  rm -rf /var/lib/chome
+fi
+exit 0
+POSTRM
+chmod 755 "$STAGE/DEBIAN/postinst" "$STAGE/DEBIAN/postrm"
 
 mkdir -p dist
 OUT="dist/${PKG}_${VERSION}_${ARCH}.deb"

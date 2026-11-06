@@ -46,3 +46,29 @@ jobs:
           name: Chỏme ${{ github.ref_name }}
           files: dist/*.deb
           generate_release_notes: true
+
+      # Kho APT trên nhánh gh-pages (GitHub Pages): máy đã cài Chỏme tự cập nhật qua apt.
+      # Cần secret APT_SIGNING_KEY (khóa bí mật để ký kho); chưa có thì bỏ qua bước này.
+      - name: Cập nhật kho APT (GitHub Pages)
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -z "$APT_SIGNING_KEY" ]; then
+            echo "::warning::Chưa có secret APT_SIGNING_KEY — bỏ qua cập nhật kho APT"
+            exit 0
+          fi
+          sudo apt-get install -y apt-utils
+          url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$url" gh-pages >/dev/null; then
+            git clone --quiet --depth 1 --branch gh-pages "$url" pages
+          else
+            mkdir pages && git -C pages init --quiet -b gh-pages && git -C pages remote add origin "$url"
+          fi
+          packaging/update-apt-repo.sh pages dist/*.deb
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit --quiet -m "Kho APT: ${GITHUB_REF_NAME}"
+          git push --quiet origin gh-pages

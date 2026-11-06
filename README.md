@@ -38,8 +38,8 @@ Yêu cầu: **Ubuntu 24.04 trở lên** hoặc **Debian 13**, máy tính chip In
 
 Gỡ cài đặt: `sudo apt remove chome`
 
-**Cập nhật:** Chỏme tự kiểm tra bản mới mỗi ngày và hiện thông báo — bấm **Cập nhật** là xong
-(hoặc menu ⋮ → Kiểm tra cập nhật).
+**Cập nhật:** khi cài, Chỏme tự thêm kho cập nhật của mình, nên bản mới sẽ đến cùng các cập nhật
+khác của Ubuntu (Software Updater hoặc `sudo apt upgrade`). Chỏme cũng tự báo khi có bản mới.
 
 ## Build từ mã nguồn
 
