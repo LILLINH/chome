@@ -8,6 +8,8 @@ set -euo pipefail
 
 PAGES_DIR="${1:?Thiếu thư mục gh-pages}"
 shift
+# Đường dẫn tuyệt đối: script có "cd" vào trong kho, đường dẫn tương đối sẽ sai sau đó.
+PAGES_DIR="$(cd "$PAGES_DIR" && pwd)"
 [ "$#" -gt 0 ] || { echo "Thiếu file .deb" >&2; exit 1; }
 : "${APT_SIGNING_KEY:?Thiếu biến APT_SIGNING_KEY (khóa bí mật để ký kho)}"
 KEEP=3 # số bản giữ lại trong kho
